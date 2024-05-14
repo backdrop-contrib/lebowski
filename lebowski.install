@@ -1,7 +1,17 @@
 <?php
+/**
+ * @file
+ * Install, update and uninstall functions for the lebowski module.
+ *
+ */
+
 
 /*
  * Implements hook_schema() and has a white russian
+ */
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
  */
 function lebowski_schema() {
   $schema['lebowski'] = array(
@@ -22,16 +32,22 @@ function lebowski_schema() {
     ),
     'primary key' => array('lid'),
   );
-  
+
   watchdog('lebowski', '2oz vodka, 1oz coffee liqueur, 1oz cream or milk', NULL, WATCHDOG_INFO);
   return $schema;
 } // lebowski_schema()
 
+
 /*
  * Implements hook_install(), man
  */
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function lebowski_install() {
   // add the quotes
+
   $quotes = array(
     '<b>Donny</b>: Phone\'s ringing, Dude. <br/><b>The Dude</b>: Thank you, Donny.',
     '<b>Maude Lebowski</b>: What do you do for recreation? <br/><b>The Dude</b>: Oh, the usual. I bowl. Drive around. The occasional acid flashback.',
@@ -197,9 +213,13 @@ function lebowski_install() {
   $count = 0;
   foreach ($quotes as $quote) {
     $record = array('quote' => $quote);
-    if (drupal_write_record('lebowski', $record)) $count++;
+    if (backdrop_write_record('lebowski', $record)) {
+      $count++;
+    }
   } // foreach
 
-  drupal_set_message(t('Installed %count Lebowski quotes', array('%count' => $count)));
+
+  backdrop_set_message(t('Installed %count Lebowski quotes', array('%count' => $count)));
 
 } // lebowski_install()
+
