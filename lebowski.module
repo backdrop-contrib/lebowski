@@ -6,11 +6,12 @@
 function lebowski_menu() {
   $items = array();
 
-  $items['dude'] = array(
-    'title' => 'The Big Lebowski',
-    'page callback' => 'lebowski_page',
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
+  // Admin report page for Lebowski quotes
+  $items['admin/reports/lebowski-quote'] = array(
+    'title' => 'Lebowski',
+    'description' => 'Displays a random Lebowski quote.',
+    'page callback' => 'lebowski_random_quote',
+    'access arguments' => array('access administration pages'),
   );
 
   return $items;
@@ -19,7 +20,7 @@ function lebowski_menu() {
 /*
  * Page callback for Lebowski quotes page
  */
-function lebowski_page() {
+function lebowski_random_quote() {
   // Fetch a random quote from the database
   $quote = db_select('lebowski', 'l')
     ->fields('l', array('quote'))
@@ -76,4 +77,3 @@ function lebowski_block_view($delta = '') {
 
   return $block;
 } // lebowski_block_view()
-
