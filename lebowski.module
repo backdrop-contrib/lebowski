@@ -3,21 +3,44 @@
 /*
  * Implements, like, uh hook_menu()
  */
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
- */
 function lebowski_menu() {
+  $items = array();
 
+  $items['dude'] = array(
+    'title' => 'The Big Lebowski',
+    'page callback' => 'lebowski_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
 } // lebowski_menu()
+
+/*
+ * Page callback for Lebowski quotes page
+ */
+function lebowski_page() {
+  // Fetch a random quote from the database
+  $quote = db_select('lebowski', 'l')
+    ->fields('l', array('quote'))
+    ->orderRandom()
+    ->range(0, 1)
+    ->execute()
+    ->fetchField();
+
+  // Prepare the HTML content and mark it as safe
+  $output = array(
+    '#type' => 'markup',
+    '#markup' => '<div class="lebowski-quote">' . $quote . '</div>',
+    '#allowed_tags' => array('div', 'b', 'br', 'i')  // Specify allowed HTML tags
+  );
+
+  return $output;
+}
 
 
 /*
  * Implements hook_block_info(), man
- */
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
  */
 function lebowski_block_info() {
   $block['lebowski_quotes'] = array(
@@ -28,13 +51,8 @@ function lebowski_block_info() {
   return $block;
 } // lebowski_block_info()
 
-
 /*
  * uh, Implements hook_block_view()
- */
-/**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
  */
 function lebowski_block_view($delta = '') {
   $block = array();
@@ -42,7 +60,6 @@ function lebowski_block_view($delta = '') {
   switch ($delta) {
     case 'lebowski_quotes':
       // get a quote
-
       $quote = db_select('lebowski', 'l')
         ->fields('l', array('quote'))
         ->orderRandom()
@@ -51,15 +68,12 @@ function lebowski_block_view($delta = '') {
         ->fetchField();
 
       // return the block
-
       $block['subject'] = t('Lebowski');
       $block['content'] = $quote;
 
       break;
-
   } //switch
 
   return $block;
 } // lebowski_block_view()
-
 
